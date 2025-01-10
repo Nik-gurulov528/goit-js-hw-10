@@ -32,9 +32,10 @@ unsuccessfulOpt.addEventListener('click', () => {
 promiseForm.addEventListener('submit', event => {
   event.preventDefault();
   let selectedDelayMs = inputDelayMs;
+  let finalSelectedOpt = selectedOpt;
   const promise = new Promise((resolve, reject) => {
     setTimeout(() => {
-      if (selectedOpt === successfulOpt) {
+      if (finalSelectedOpt === successfulOpt) {
         selectedOpt = null;
         resolve(`Fulfilled promise in ${selectedDelayMs}ms`);
       } else {
