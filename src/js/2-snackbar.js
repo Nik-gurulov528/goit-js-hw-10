@@ -17,9 +17,9 @@ let options = {
   position: 'center',
 };
 
-let delayMs = timeDelay.value;
+let inputDelayMs = 0;
 timeDelay.addEventListener('input', () => {
-  delayMs = timeDelay.value;
+  inputDelayMs = timeDelay.value;
 });
 
 successfulOpt.addEventListener('click', () => {
@@ -31,12 +31,15 @@ unsuccessfulOpt.addEventListener('click', () => {
 
 promiseForm.addEventListener('submit', event => {
   event.preventDefault();
-  let promise = new Promise((resolve, reject) => {
+  let selectedDelayMs = inputDelayMs;
+  const promise = new Promise((resolve, reject) => {
     setTimeout(() => {
       if (selectedOpt === successfulOpt) {
-        resolve(`Fulfilled promise in ${delayMs}ms`);
+        selectedOpt = null;
+        resolve(`Fulfilled promise in ${selectedDelayMs}ms`);
       } else {
-        reject(`Rejected promise in ${delayMs}ms`);
+        selectedOpt = null;
+        reject(`Rejected promise in ${selectedDelayMs}ms`);
       }
 
       promise
@@ -54,7 +57,7 @@ promiseForm.addEventListener('submit', event => {
           options.progressBarColor = '#611101';
           iziToast.show(options);
         });
-    }, delayMs);
+    }, selectedDelayMs);
   });
   promiseForm.reset();
 });
