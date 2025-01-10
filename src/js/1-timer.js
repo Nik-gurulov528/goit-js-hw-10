@@ -24,8 +24,7 @@ const options = {
   onClose(selectedDates) {
     console.log(selectedDates[0]);
     userSelectedDate = selectedDates[0];
-  },
-  onChange(selectedDates) {
+
     if (selectedDates[0] <= options.defaultDate) {
       iziToast.show({
         title: 'Wait a minute!',
@@ -66,7 +65,7 @@ function addLeadingZero(value) {
 startBtn.addEventListener('click', () => {
   startBtn.setAttribute('disabled', true);
   inputDate.setAttribute('disabled', true);
-  let leftTime = userSelectedDate - options.defaultDate;
+  let leftTime = userSelectedDate - Date.now();
 
   let intervalId = setInterval(() => {
     leftTime -= 1000;
@@ -76,9 +75,13 @@ startBtn.addEventListener('click', () => {
     timerMinutes.textContent = addLeadingZero(convertMs(leftTime).minutes);
     timerSeconds.textContent = addLeadingZero(convertMs(leftTime).seconds);
 
-    if (leftTime / 1000 > 0 && leftTime / 1000 < 1) {
+    if ((leftTime / 1000 > 0 && leftTime / 1000 < 1) || leftTime / 1000 < 0) {
       clearInterval(intervalId);
       inputDate.removeAttribute('disabled');
+      timerDays.textContent = '00';
+      timerHours.textContent = '00';
+      timerMinutes.textContent = '00';
+      timerSeconds.textContent = '00';
     }
   }, 1000);
 });
